@@ -1,9 +1,15 @@
-import * as zChars from "./index";
+import * as t from "./index";
 
-test("Decode", () => {
-  expect(zChars.decode("A")).toBe("A");
+const zChars = t.zChars;
+
+const letter = "A";
+
+test("Encode to ZChars", () => {
+  const expected = t.toZChars(letter);
+  expect(zChars).toEqual(expect.arrayContaining(expected));
 });
 
-test("Encode", () => {
-  expect(zChars.encode("A")).toBe("A");
+test("Decode to Codepoint", () => {
+  const expected = t.toZChars(letter);
+  expect(t.toCodePoint(expected)).toEqual(letter.charCodeAt(0));
 });
