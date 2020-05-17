@@ -1,6 +1,6 @@
 import * as t from "./index";
 
-const zChars = t.zChars;
+const zChars = t.zSet;
 
 const letter = "A";
 
@@ -30,13 +30,18 @@ test("Count interpolated zChars", () => {
 
 describe("Split Ends", () => {
   test("One Character", () => {
+    const test = t.splitEnd("AB", 1);
+    expect(test).toMatchObject(["A", "B"]);
+  });
+
+  test("One Character", () => {
     const test = t.splitEnd("A", 2);
-    expect(test).toMatchObject(["", "A"]);
+    expect(test).toMatchObject(["A", undefined]);
   });
 
   test("Two Characters", () => {
     const test = t.splitEnd("AB", 2);
-    expect(test).toMatchObject(["", "AB"]);
+    expect(test).toMatchObject(["AB", undefined]);
   });
 
   test("Three Characters", () => {
@@ -50,7 +55,31 @@ describe("Split Ends", () => {
   });
 });
 
-describe("Split Up", () => {
+describe("Split Into 1", () => {
+  test("No Characters", () => {
+    const test = t.splitUp("A", 0);
+    expect(test).toMatchObject([]);
+  });
+});
+
+describe("Split Into 1", () => {
+  test("No Characters", () => {
+    const test = t.splitUp("", 1);
+    expect(test).toMatchObject([]);
+  });
+
+  test("One Characters", () => {
+    const test = t.splitUp("A", 1);
+    expect(test).toMatchObject(["A"]);
+  });
+
+  test("Four Characters", () => {
+    const test = t.splitUp("ABCD", 1);
+    expect(test).toMatchObject(["ABCD"]);
+  });
+});
+
+describe("Split Into 2", () => {
   test("No Characters", () => {
     const test = t.splitUp("", 2);
     expect(test).toMatchObject([]);
@@ -58,7 +87,7 @@ describe("Split Up", () => {
 
   test("One Characters", () => {
     const test = t.splitUp("A", 2);
-    expect(test).toMatchObject(["A"]);
+    expect(test).toMatchObject([]);
   });
 
   test("Four Characters", () => {
@@ -80,9 +109,60 @@ describe("Split Up", () => {
     const test = t.splitUp("ABCDEFGHI", 2);
     expect(test).toMatchObject(["ABCDE", "FGHI"]);
   });
+});
 
-  // test("Two Characters", () => {
-  //   const test = t.splitUp("AB", 2);
-  //   expect(test).toMatchObject(["A", "B"]);
-  // });
+describe("Split into 3", () => {
+  test.each([
+    ["ABC", 0, ["ABC"]],
+    ["ABC", 1, ["ABC"]],
+    ["ABC", 2, ["AB", "C"]],
+    ["ABC", 3, ["A", "B", "C"]],
+    ["ABC", 4, ["A", "B", "C"]],
+  ])("Split %s into %i", (a, b, expected) => {
+    const toInterpolate = 4;
+    const test = ["ABC"];
+    const expect = ["A", "B", "C"];
+  });
+  test.each([
+    ["ABCDE", 0, ["ABCDE"]],
+    ["ABCDE", 1, ["ABCDE"]],
+    ["ABCDE", 2, ["ABCD", "E"]],
+    ["ABCDE", 3, ["AB", "CD", "E"]],
+    ["ABCDE", 4, ["A", "B", "C"]],
+  ])("Split %s into %i", (a, b, expected) => {
+    const test = t.splitForZChars(a, b);
+    expect(test).toMatchObject(expected);
+  });
+});
+
+describe("Split into 5", () => {
+  test("No characters", () => {
+    const test = ["ABCDE"];
+    const toInterpolate = 0;
+    const expect = ["ABCDE"];
+  });
+
+  test("One characters", () => {
+    const toInterpolate = 1;
+    const test = ["ABCDE"];
+    const expect = ["ABCDE", "E"];
+  });
+
+  test("Two characters", () => {
+    const toInterpolate = 2;
+    const test = ["ABCDE"];
+    const expect = ["A", "B", "C"];
+  });
+
+  test("Three characters", () => {
+    const toInterpolate = 3;
+    const test = ["ABCDE"];
+    const expect = ["A", "B", "C"];
+  });
+
+  test("Four characters", () => {
+    const toInterpolate = 4;
+    const test = ["ABCDE"];
+    const expect = ["A", "B", "C"];
+  });
 });
