@@ -51,12 +51,38 @@ describe("Split Ends", () => {
 });
 
 describe("Split Up", () => {
-  test("One Character", () => {
-    const test = t.splitUp("A", 4);
+  test("No Characters", () => {
+    const test = t.splitUp("", 2);
+    expect(test).toMatchObject([]);
+  });
+
+  test("One Characters", () => {
+    const test = t.splitUp("A", 2);
     expect(test).toMatchObject(["A"]);
   });
-  test("Two Characters", () => {
-    const test = t.splitUp("AB", 2);
-    expect(test).toMatchObject(["A", "B"]);
+
+  test("Four Characters", () => {
+    const test = t.splitUp("ABCD", 2);
+    expect(test).toMatchObject(["AB", "CD"]);
   });
+
+  test("Five Characters", () => {
+    const test = t.splitUp("ABCDE", 2);
+    expect(test).toMatchObject(["ABC", "DE"]);
+  });
+
+  test("Eight Characters", () => {
+    const test = t.splitUp("ABCDEFGH", 2);
+    expect(test).toMatchObject(["ABCD", "EFGH"]);
+  });
+
+  test("Nine Characters", () => {
+    const test = t.splitUp("ABCDEFGHI", 2);
+    expect(test).toMatchObject(["ABCDE", "FGHI"]);
+  });
+
+  // test("Two Characters", () => {
+  //   const test = t.splitUp("AB", 2);
+  //   expect(test).toMatchObject(["A", "B"]);
+  // });
 });

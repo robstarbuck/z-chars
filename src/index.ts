@@ -41,11 +41,20 @@ export const splitEnd: SplitEnd = (text, count) => {
   return [head, end];
 };
 
+// export const splitUp: SplitUp = (text, count) => {
+//   const splitInto = Math.floor(text.length / count);
+//   console.log(splitInto);
+//   const headGroups = text.match(new RegExp(`.{${splitInto}}`, "g"));
+//   const tail = headGroups ? text.slice(-headGroups.length * splitInto) : "";
+//   return headGroups ? [...headGroups, tail] : [tail];
+// };
+
 export const splitUp: SplitUp = (text, count) => {
-  const groupInto = Math.floor(text.length / count);
-  console.warn(groupInto);
-  const groups = text.match(new RegExp(`.{${groupInto}}`, "g"));
-  return groups ? [...groups] : [];
+  const splitInto = Math.max(1, Math.ceil(text.length / count));
+  const headGroups = text.match(new RegExp(`.{${splitInto}}`, "g"));
+  const tailCount = headGroups && text.length - headGroups.length * splitInto;
+  const tail = tailCount ? text.slice(-tailCount) : [];
+  return headGroups ? headGroups.concat(tail) : [];
 };
 
 export const decode: Decode = (v) => v;
