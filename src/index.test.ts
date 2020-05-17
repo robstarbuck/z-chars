@@ -5,11 +5,58 @@ const zChars = t.zChars;
 const letter = "A";
 
 test("Encode to ZChars", () => {
-  const expected = t.toZChars(letter);
-  expect(zChars).toEqual(expect.arrayContaining(expected));
+  const test = t.toZChars(letter);
+  const expected = expect.arrayContaining(zChars);
+  expect(test).toEqual(expected);
 });
 
 test("Decode to Codepoint", () => {
-  const expected = t.toZChars(letter);
-  expect(t.toCodePoint(expected)).toEqual(letter.charCodeAt(0));
+  const test = t.toCodePoint(t.toZChars(letter));
+  const expected = letter.charCodeAt(0);
+  expect(test).toEqual(expected);
+});
+
+test("Count interpolated zChars", () => {
+  const str = [
+    "A",
+    t.toZChars(letter).join(""),
+    "A",
+    t.toZChars(letter).join(""),
+    "A",
+  ].join("");
+  const test = t.filterZChars(str);
+  expect(test?.length).toEqual(2);
+});
+
+describe("Split Ends", () => {
+  test("One Character", () => {
+    const test = t.splitEnd("A", 2);
+    expect(test).toMatchObject(["", "A"]);
+  });
+
+  test("Two Characters", () => {
+    const test = t.splitEnd("AB", 2);
+    expect(test).toMatchObject(["", "AB"]);
+  });
+
+  test("Three Characters", () => {
+    const test = t.splitEnd("ABC", 2);
+    expect(test).toMatchObject(["A", "BC"]);
+  });
+
+  test("Five Characters", () => {
+    const test = t.splitEnd("ABCDE", 2);
+    expect(test).toMatchObject(["ABC", "DE"]);
+  });
+});
+
+describe("Split Up", () => {
+  test("One Character", () => {
+    const test = t.splitUp("A", 4);
+    expect(test).toMatchObject(["A"]);
+  });
+  test("Two Characters", () => {
+    const test = t.splitUp("AB", 2);
+    expect(test).toMatchObject(["A", "B"]);
+  });
 });
