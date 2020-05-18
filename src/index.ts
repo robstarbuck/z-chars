@@ -44,16 +44,26 @@ export const splitEnd: SplitEnd = (text, count) => {
 };
 
 export const splitUp: SplitUp = (text, count) => {
-  const splitInto = text.length / count;
-  if (splitInto < 1) {
-    return [];
-  }
-  return text.match(new RegExp(`.{1,${Math.ceil(splitInto)}}`, "g")) || [];
+  const splitSum = text.length / Math.min(text.length, Math.max(count, 0));
+  const groupInto = Math.floor(splitSum);
+  const remainder = splitSum - groupInto > 0;
+
+  const orphan = text.slice(0, remainder ? 1 : 0);
+  const toGroups = text.slice(remainder ? 1 : 0);
+
+  const [adopter, ...groups] =
+    toGroups.match(new RegExp(`.{${groupInto}}`, "g")) || [];
+  return adopter ? [orphan.concat(adopter), ...groups] : [text];
 };
 
 export const splitForZChars: SplitForZChars = (text, count) => {
+  if (count <= 1) {
+    return [text];
+  }
+  const limitedCount = count;
   const [head, tail] = splitEnd(text, 1);
-  const groups = head ? splitUp(head, count - 1) : [];
+  const groups = head ? splitUp(head, limitedCount - 1) : [];
+
   return tail ? [...groups, tail] : [...groups];
 };
 

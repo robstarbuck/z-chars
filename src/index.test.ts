@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import * as t from "./index";
 
 const zChars = t.zSet;
@@ -43,25 +44,35 @@ describe("splitEnd (3 chars)", () => {
 
 describe("splitUp (3 chars)", () => {
   test.each([
-    ["A", 0, []],
-    ["", 1, []],
+    ["A", -1, ["A"]],
+    ["A", 0, ["A"]],
+    ["", 1, [""]],
     ["A", 1, ["A"]],
     ["ABCD", 1, ["ABCD"]],
-    ["", 2, []],
-    ["A", 2, []],
+    ["", 2, [""]],
+    ["A", 2, ["A"]],
+    ["AB", 2, ["A", "B"]],
     ["ABCD", 2, ["AB", "CD"]],
     ["ABCDE", 2, ["ABC", "DE"]],
     ["ABCDEFGH", 2, ["ABCD", "EFGH"]],
     ["ABCDEFGHI", 2, ["ABCDE", "FGHI"]],
+    ["ABCD", 3, ["AB", "C", "D"]],
+    ["ABCDE", 4, ["AB", "C", "D", "E"]],
+    ["ABCDE", 7, ["A", "B", "C", "D", "E"]],
+    ["ABCDEFGHIJ", 3, ["ABCD", "EFG", "HIJ"]],
   ])("Split %s into %i", (a, b, expected) => {
     const test = t.splitUp(a, b);
     expect(test).toMatchObject(expected);
   });
 });
 
-describe.skip("splitForZChars", () => {
+describe("splitForZChars", () => {
   test.each([
     ["ABC", 0, ["ABC"]],
+    ["ABC", 1, ["ABC"]],
+    ["ABC", 2, ["AB", "C"]],
+    ["ABC", 3, ["A", "B", "C"]],
+    ["ABC", 5, ["A", "B", "C"]],
     ["ABC", 1, ["ABC"]],
     ["ABC", 2, ["AB", "C"]],
     ["ABC", 3, ["A", "B", "C"]],
@@ -76,7 +87,7 @@ describe.skip("splitForZChars", () => {
     ["ABCDE", 1, ["ABCDE"]],
     ["ABCDE", 2, ["ABCD", "E"]],
     ["ABCDE", 3, ["AB", "CD", "E"]],
-    ["ABCDE", 4, ["A", "B", "C"]],
+    ["ABCDE", 4, ["AB", "C", "D", "E"]],
   ])("Split %s into %i (5 chars)", (a, b, expected) => {
     const test = t.splitForZChars(a, b);
     expect(test).toMatchObject(expected);
