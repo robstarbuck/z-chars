@@ -13,9 +13,9 @@ type ToZChars = (chars: string) => string[];
 
 type ToCodePoint = (set: string[]) => number;
 
-type Decode = (toDecode: string) => string;
+type Decode = (text: string, toDecode: string) => string;
 
-type Encode = (toEncode: string) => string;
+type Encode = (text: string, toEncode: string) => string;
 
 // export const zChars = ["\u200c", "\u200d", "\u202c"];
 const terminator = "\u2069";
@@ -44,16 +44,16 @@ export const splitEnd: SplitEnd = (text, count) => {
 };
 
 export const splitUp: SplitUp = (text, count) => {
-  const splitSum = text.length / Math.min(text.length, Math.max(count, 0));
+  const splitSum = Math.max(text.length / count, 1);
   const groupInto = Math.floor(splitSum);
   const remainder = splitSum - groupInto > 0;
 
   const orphan = text.slice(0, remainder ? 1 : 0);
   const toGroups = text.slice(remainder ? 1 : 0);
 
-  const [adopter, ...groups] =
+  const [adopter, ...grouped] =
     toGroups.match(new RegExp(`.{${groupInto}}`, "g")) || [];
-  return adopter ? [orphan.concat(adopter), ...groups] : [text];
+  return adopter ? [orphan.concat(adopter), ...grouped] : [text];
 };
 
 export const splitForZChars: SplitForZChars = (text, count) => {
@@ -69,4 +69,8 @@ export const splitForZChars: SplitForZChars = (text, count) => {
 
 export const decode: Decode = (v) => v;
 
-export const encode: Encode = (v) => v;
+export const encode: Encode = (text, toEncode) => {
+  if (text.length > toEncode.length) {
+  }
+  return text;
+};

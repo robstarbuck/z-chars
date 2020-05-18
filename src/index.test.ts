@@ -88,6 +88,8 @@ describe("splitForZChars", () => {
     ["ABCDE", 2, ["ABCD", "E"]],
     ["ABCDE", 3, ["AB", "CD", "E"]],
     ["ABCDE", 4, ["AB", "C", "D", "E"]],
+    ["ABCDE", 5, ["A","B", "C", "D", "E"]],
+    ["ABCDE", 9, ["A","B", "C", "D", "E"]]
   ])("Split %s into %i (5 chars)", (a, b, expected) => {
     const test = t.splitForZChars(a, b);
     expect(test).toMatchObject(expected);
