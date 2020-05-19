@@ -68,14 +68,11 @@ export const splitUpNext: SplitUp = (text, count) => {
 };
 
 export const splitUpSplitEnd: SplitUp = (text, count) => {
-  if (count < 2 || text.length < 2) {
-    return [text];
-  }
-
-  const groupInto = Math.floor(text.length / count) || 1;
+  const minCount = Math.max(count, 1);
+  const groupInto = Math.floor(text.length / minCount) || 1;
   const [head, tail] = splitEnd(text, groupInto + (text.length % count));
 
-  const matches = head.match(new RegExp(`.{${groupInto}}`, "g")) || [];
+  const matches = head.match(new RegExp(`.{${groupInto}}`, "g")) || [""];
   return matches && tail ? matches.concat(tail) : matches;
 };
 
