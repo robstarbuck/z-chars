@@ -73,7 +73,7 @@ export const splitUpSplitEnd: SplitUp = (text, count) => {
   const [head, tail] = splitEnd(text, groupInto + (text.length % count));
 
   const matches = head.match(new RegExp(`.{${groupInto}}`, "g")) || [""];
-  return matches && tail ? matches.concat(tail) : matches;
+  return tail ? matches.concat(tail) : matches;
 };
 
 export const splitForZChars: SplitForZChars = (text, count) => {
