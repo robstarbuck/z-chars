@@ -1,9 +1,6 @@
 type SplitForZChars = (text: string, count: number) => string[];
 
-type SplitEnd = (
-  toSplit: string,
-  tailCount: number
-) => [string, string | undefined];
+type SplitEnd = (toSplit: string, tailCount: number) => [string, string];
 
 type SplitUp = (toSplit: string, count: number) => string[];
 
@@ -40,7 +37,7 @@ export const toCodePoint: ToCodePoint = (zs: string[]) => {
 export const splitEnd: SplitEnd = (text, count) => {
   const head = text.slice(0, -count);
   const end = text.slice(-count);
-  return head ? [head, end] : [end, undefined];
+  return head ? [head, end] : [end, ""];
 };
 
 export const splitUp: SplitUp = (text, count) => {
@@ -68,6 +65,18 @@ export const splitUpNext: SplitUp = (text, count) => {
   return hasOrphan
     ? matches.slice(0, -2).concat(matches.slice(-2).join(""))
     : matches;
+};
+
+export const splitUpSplitEnd: SplitUp = (text, count) => {
+  if (count < 2 || text.length < 2) {
+    return [text];
+  }
+
+  const groupInto = Math.floor(text.length / count) || 1;
+  const [head, tail] = splitEnd(text, groupInto + (text.length % count));
+
+  const matches = head.match(new RegExp(`.{${groupInto}}`, "g")) || [];
+  return matches && tail ? matches.concat(tail) : matches;
 };
 
 export const splitForZChars: SplitForZChars = (text, count) => {
