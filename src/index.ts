@@ -56,6 +56,20 @@ export const splitUp: SplitUp = (text, count) => {
   return adopter ? [orphan.concat(adopter), ...grouped] : [text];
 };
 
+export const splitUpNext: SplitUp = (text, count) => {
+  if (count < 2 || text.length < 2) {
+    return [text];
+  }
+  const groupInto = Math.floor(text.length / count) || 1;
+  const hasOrphan = Boolean(text.length % count);
+
+  const matches = text.match(new RegExp(`.{1,${groupInto}}`, "g")) || [];
+
+  return hasOrphan
+    ? matches.slice(0, -2).concat(matches.slice(-2).join(""))
+    : matches;
+};
+
 export const splitForZChars: SplitForZChars = (text, count) => {
   if (count <= 1) {
     return [text];
@@ -66,6 +80,8 @@ export const splitForZChars: SplitForZChars = (text, count) => {
 
   return tail ? [...groups, tail] : [...groups];
 };
+
+// export const interpolate = (text: [])
 
 export const decode: Decode = (v) => v;
 

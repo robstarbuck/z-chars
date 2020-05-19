@@ -66,6 +66,30 @@ describe("splitUp (3 chars)", () => {
   });
 });
 
+describe.only("splitUpNext (3 chars)", () => {
+  test.each([
+    // ["A", -1, ["A"]],
+    // ["A", 0, ["A"]],
+    // ["", 1, [""]],
+    // ["A", 1, ["A"]],
+    // ["ABCD", 1, ["ABCD"]],
+    // ["", 2, [""]],
+    // ["A", 2, ["A"]],
+    // ["AB", 2, ["A", "B"]],
+    // ["ABCD", 2, ["AB", "CD"]],
+    // ["ABCDE", 2, ["AB", "CDE"]],
+    // ["ABCDEFGH", 2, ["ABCD", "EFGH"]],
+    // ["ABCDEFGHI", 2, ["ABCD", "EFGHI"]],
+    ["ABCD", 3, ["A", "B", "CD"]],
+    // ["ABCDE", 4, ["A", "B", "C", "DE"]],
+    // ["ABCDE", 7, ["A", "B", "C", "D", "E"]],
+    // ["ABCDEFGHIJ", 3, ["ABC", "DEF", "GHIJ"]],
+  ])("Split %s into %i", (a, b, expected) => {
+    const test = t.splitUpNext(a, b);
+    expect(test).toMatchObject(expected);
+  });
+});
+
 describe("splitForZChars", () => {
   test.each([
     ["ABC", 0, ["ABC"]],
