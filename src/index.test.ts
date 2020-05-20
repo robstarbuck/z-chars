@@ -67,26 +67,39 @@ describe("splitUp (3 chars)", () => {
   });
 });
 
-describe.only("splitUpNext (3 chars)", () => {
-  test.each([
+describe.only("splitUp", () => {
+
+  type Test = Array<[string,number,Array<string>]>
+
+  const misuse: Test = [
     ["A", -1, ["A"]],
-    ["A", 0, ["A"]],
+    ["AB", 3, ["A","B"]],
     ["", 1, [""]],
+    ["", 2, [""]]
+  ];
+  
+  const evenGroups: Test = [
     ["A", 1, ["A"]],
-    ["ABCD", 1, ["ABCD"]],
-    ["", 2, [""]],
-    ["A", 2, ["A"]],
+    ["AB", 1, ["AB"]],
     ["AB", 2, ["A", "B"]],
     ["ABCD", 2, ["AB", "CD"]],
+    ["ABCDEFGHI", 3, ["ABC", "DEF", "GHI"]],
+  ];
+
+  const bigGroups: Test = [
+    ["ABC", 2 ,["A","BC"]],
     ["ABCDE", 2, ["AB", "CDE"]],
-    ["ABCDEFGH", 2, ["ABCD", "EFGH"]],
     ["ABCDEFGHI", 2, ["ABCD", "EFGHI"]],
     ["ABCD", 3, ["A", "B", "CD"]],
-    ["ABCDE", 4, ["A", "B", "C", "DE"]],
-    ["ABCDE", 7, ["A", "B", "C", "D", "E"]],
     ["ABCDEFGHIJ", 3, ["ABC", "DEF", "GHIJ"]],
-  ])("Split %s into %i", (a, b, expected) => {
-    const test = t.splitUpSplitEnd(a, b);
+  ]
+
+  test.each([
+    ...misuse,
+    ...bigGroups,
+    ...evenGroups
+  ])("splitUp %s into %i", (a, b, expected) => {
+    const test = t.splitUp(a, b);
     expect(test).toMatchObject(expected);
   });
 });
@@ -98,10 +111,6 @@ describe("splitForZChars", () => {
     ["ABC", 2, ["AB", "C"]],
     ["ABC", 3, ["A", "B", "C"]],
     ["ABC", 5, ["A", "B", "C"]],
-    ["ABC", 1, ["ABC"]],
-    ["ABC", 2, ["AB", "C"]],
-    ["ABC", 3, ["A", "B", "C"]],
-    ["ABC", 4, ["A", "B", "C"]],
   ])("Split %s into %i (3 chars)", (a, b, expected) => {
     const test = t.splitForZChars(a, b);
     expect(test).toMatchObject(expected);
