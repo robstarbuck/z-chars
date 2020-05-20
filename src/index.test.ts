@@ -43,89 +43,69 @@ describe("splitEnd (3 chars)", () => {
   });
 });
 
-describe("splitUp (3 chars)", () => {
-  test.each([
-    ["A", -1, ["A"]],
-    ["A", 0, ["A"]],
-    ["", 1, [""]],
-    ["A", 1, ["A"]],
-    ["ABCD", 1, ["ABCD"]],
-    ["", 2, [""]],
-    ["A", 2, ["A"]],
-    ["AB", 2, ["A", "B"]],
-    ["ABCD", 2, ["AB", "CD"]],
-    ["ABCDE", 2, ["ABC", "DE"]],
-    ["ABCDEFGH", 2, ["ABCD", "EFGH"]],
-    ["ABCDEFGHI", 2, ["ABCDE", "FGHI"]],
-    ["ABCD", 3, ["AB", "C", "D"]],
-    ["ABCDE", 4, ["AB", "C", "D", "E"]],
-    ["ABCDE", 7, ["A", "B", "C", "D", "E"]],
-    ["ABCDEFGHIJ", 3, ["ABCD", "EFG", "HIJ"]],
-  ])("Split %s into %i", (a, b, expected) => {
-    const test = t.splitUp(a, b);
-    expect(test).toMatchObject(expected);
-  });
+
+type Test = Array<[string,number,Array<string>]>
+
+const misuse: Test = [
+  ["A", -1, ["A"]],
+  ["AB", 3, ["A","B"]],
+  ["", 1, [""]],
+  ["", 2, [""]]
+];
+
+const evenGroups: Test = [
+  ["A", 1, ["A"]],
+  ["AB", 1, ["AB"]],
+  ["AB", 2, ["A", "B"]],
+  ["ABCD", 2, ["AB", "CD"]],
+  ["ABCDEFGHI", 3, ["ABC", "DEF", "GHI"]],
+];
+
+const bigGroups: Test = [
+  ["ABC", 2 ,["A","BC"]],
+  ["ABCDE", 2, ["AB", "CDE"]],
+  ["ABCDEFGHI", 2, ["ABCD", "EFGHI"]],
+  ["ABCD", 3, ["A", "B", "CD"]],
+  ["ABCDEFGHIJ", 3, ["ABC", "DEF", "GHIJ"]],
+]
+
+test.each([
+  ...misuse,
+  ...bigGroups,
+  ...evenGroups
+])("splitUp %s into %i", (a, b, expected) => {
+  const test = t.splitUp(a, b);
+  expect(test).toMatchObject(expected);
 });
 
-describe.only("splitUp", () => {
-
-  type Test = Array<[string,number,Array<string>]>
-
-  const misuse: Test = [
-    ["A", -1, ["A"]],
-    ["AB", 3, ["A","B"]],
-    ["", 1, [""]],
-    ["", 2, [""]]
-  ];
-  
-  const evenGroups: Test = [
-    ["A", 1, ["A"]],
-    ["AB", 1, ["AB"]],
-    ["AB", 2, ["A", "B"]],
-    ["ABCD", 2, ["AB", "CD"]],
-    ["ABCDEFGHI", 3, ["ABC", "DEF", "GHI"]],
-  ];
-
-  const bigGroups: Test = [
-    ["ABC", 2 ,["A","BC"]],
-    ["ABCDE", 2, ["AB", "CDE"]],
-    ["ABCDEFGHI", 2, ["ABCD", "EFGHI"]],
-    ["ABCD", 3, ["A", "B", "CD"]],
-    ["ABCDEFGHIJ", 3, ["ABC", "DEF", "GHIJ"]],
-  ]
-
-  test.each([
-    ...misuse,
-    ...bigGroups,
-    ...evenGroups
-  ])("splitUp %s into %i", (a, b, expected) => {
-    const test = t.splitUp(a, b);
-    expect(test).toMatchObject(expected);
-  });
+test.each([
+  ["ABC", 0, ["ABC"]],
+  ["ABC", 1, ["ABC"]],
+  ["ABC", 2, ["AB", "C"]],
+  ["ABC", 3, ["A", "B", "C"]],
+  ["ABC", 5, ["A", "B", "C"]],
+])("Split %s into %i (3 chars)", (a, b, expected) => {
+  const test = t.splitForZChars(a, b);
+  expect(test).toMatchObject(expected);
 });
 
-describe("splitForZChars", () => {
-  test.each([
-    ["ABC", 0, ["ABC"]],
-    ["ABC", 1, ["ABC"]],
-    ["ABC", 2, ["AB", "C"]],
-    ["ABC", 3, ["A", "B", "C"]],
-    ["ABC", 5, ["A", "B", "C"]],
-  ])("Split %s into %i (3 chars)", (a, b, expected) => {
-    const test = t.splitForZChars(a, b);
-    expect(test).toMatchObject(expected);
-  });
+test.each([
+  ["ABCDE", 0, ["ABCDE"]],
+  ["ABCDE", 1, ["ABCDE"]],
+  ["ABCDE", 2, ["ABCD", "E"]],
+  ["ABCDE", 3, ["AB", "CD", "E"]],
+  ["ABCDE", 4, ["A", "B", "CD", "E"]],
+  ["ABCDE", 9, ["A", "B", "C", "D", "E"]]
+])("Split %s into %i (5 chars)", (a, b, expected) => {
+  const test = t.splitForZChars(a, b);
+  expect(test).toMatchObject(expected);
+});
 
-  test.each([
-    ["ABCDE", 0, ["ABCDE"]],
-    ["ABCDE", 1, ["ABCDE"]],
-    ["ABCDE", 2, ["ABCD", "E"]],
-    ["ABCDE", 3, ["AB", "CD", "E"]],
-    ["ABCDE", 4, ["AB", "C", "D", "E"]],
-    ["ABCDE", 5, ["A","B", "C", "D", "E"]],
-    ["ABCDE", 9, ["A","B", "C", "D", "E"]]
-  ])("Split %s into %i (5 chars)", (a, b, expected) => {
-    const test = t.splitForZChars(a, b);
-    expect(test).toMatchObject(expected);
-  });
+
+test.only.each([
+  ["ABCDE", "INO", ["ABCDE"]],
+])("Encode %s into %s (5 chars)", (a, b, expected) => {
+  const test = t.encode(a, b);
+  console.log(test);
+  // expect(test).toMatchObject(expected);
 });

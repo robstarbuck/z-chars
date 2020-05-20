@@ -1,20 +1,5 @@
-type SplitForZChars = (text: string, count: number) => string[];
-
-type SplitEnd = (toSplit: string, tailCount: number) => [string, string];
-
-type SplitUp = (toSplit: string, count: number) => string[];
-
-type FilterZChars = (chars: string) => string[] | null;
-
-type ToZChars = (chars: string) => string[];
-
-type ToCodePoint = (set: string[]) => number;
-
-type Decode = (text: string, toDecode: string) => string;
-
-type Encode = (text: string, toEncode: string) => string;
-
 // export const zChars = ["\u200c", "\u200d", "\u202c"];
+
 const terminator = "\u2069";
 export const zSet = ["\u2066", "\u202a", "\u202d"];
 
@@ -22,12 +7,11 @@ const zCharMatch = new RegExp(`[${zSet.join("")}]+`, "g");
 
 export const filterZChars: FilterZChars = (chars) => chars.match(zCharMatch);
 
-export const toZChars: ToZChars = (letter) =>
-  letter
-    .charCodeAt(0)
-    .toString(zSet.length)
-    .split("")
-    .map((zIndex) => zSet[Number(zIndex)]);
+export const toZChars: ToZChars = (letter) => {
+  const codeRef = letter.charCodeAt(0);
+  const zIndexes = codeRef.toString(zSet.length).split("");
+  return zIndexes.map((zIndex) => zSet[Number(zIndex)]);
+};
 
 export const toCodePoint: ToCodePoint = (zs: string[]) => {
   const indexes = zs.map((l) => zSet.indexOf(l));
@@ -40,36 +24,11 @@ export const splitEnd: SplitEnd = (text, count) => {
   return head ? [head, end] : [end, ""];
 };
 
-export const splitUpOld: SplitUp = (text, count) => {
-  const splitSum = Math.max(text.length / count, 1);
-  const groupInto = Math.floor(splitSum);
-  const remainder = splitSum - groupInto > 0;
-
-  const orphan = text.slice(0, remainder ? 1 : 0);
-  const toGroups = text.slice(remainder ? 1 : 0);
-
-  const [adopter, ...grouped] =
-    toGroups.match(new RegExp(`.{${groupInto}}`, "g")) || [];
-  return adopter ? [orphan.concat(adopter), ...grouped] : [text];
-};
-
-export const splitUpNext: SplitUp = (text, count) => {
-  if (count < 2 || text.length < 2) {
-    return [text];
-  }
-  const groupInto = Math.floor(text.length / count) || 1;
-  const hasOrphan = Boolean(text.length % count);
-
-  const matches = text.match(new RegExp(`.{1,${groupInto}}`, "g")) || [];
-
-  return hasOrphan
-    ? matches.slice(0, -2).concat(matches.slice(-2).join(""))
-    : matches;
-};
-
 export const splitUp: SplitUp = (text, count) => {
-  const minCount = Math.max(1, count);
-  const groupLen = Math.max(1, Math.floor(text.length / minCount));
+  const { floor, max } = Math;
+
+  const minCount = max(1, count);
+  const groupLen = max(1, floor(text.length / minCount));
   const groupMatch = new RegExp(`.{${groupLen}}`, "g");
 
   const tailLen = groupLen + (text.length % count);
@@ -88,12 +47,25 @@ export const splitForZChars: SplitForZChars = (text, count) => {
   return tail ? [...groups, tail] : [...groups];
 };
 
-// export const interpolate = (text: [])
+export const interpolate: Interpolate = (text, zChars) => {
+  const chars = text.split("");
+  const interpolated = chars.map((c, i) => c.concat(zChars[i] || ""));
+  return interpolated.join("");
+};
+
+export const canEncode: CanEncode = (text, toEncode) => {
+  if (text.length > toEncode.length) {
+    return true;
+  }
+  return false;
+};
 
 export const decode: Decode = (v) => v;
 
 export const encode: Encode = (text, toEncode) => {
-  if (text.length > toEncode.length) {
+  if (!canEncode(text, toEncode)) {
+    return text;
   }
-  return text;
+  const zChars = toZChars(toEncode);
+  return interpolate(text, zChars);
 };
