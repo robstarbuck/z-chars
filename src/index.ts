@@ -69,10 +69,12 @@ export const splitUpNext: SplitUp = (text, count) => {
 
 export const splitUpSplitEnd: SplitUp = (text, count) => {
   const minCount = Math.max(count, 1);
-  const groupInto = Math.floor(text.length / minCount) || 1;
-  const [head, tail] = splitEnd(text, groupInto + (text.length % count));
+  const groupLen = Math.floor(text.length / minCount) || 1;
+  const tailLen = groupLen + (text.length % count);
 
-  const matches = head.match(new RegExp(`.{${groupInto}}`, "g")) || [""];
+  const [head, tail] = splitEnd(text, tailLen);
+
+  const matches = head.match(new RegExp(`.{${groupLen}}`, "g")) || [""];
   return tail ? matches.concat(tail) : matches;
 };
 
@@ -83,7 +85,6 @@ export const splitForZChars: SplitForZChars = (text, count) => {
   const limitedCount = count;
   const [head, tail] = splitEnd(text, 1);
   const groups = head ? splitUp(head, limitedCount - 1) : [];
-
   return tail ? [...groups, tail] : [...groups];
 };
 
