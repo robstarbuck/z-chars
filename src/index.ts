@@ -1,30 +1,32 @@
 // export const zChars = ["\u200c", "\u200d", "\u202c"];
+import type * as T from "../index";
 
 const terminator = "\u2069";
+
 export const zSet = ["\u2066", "\u202a", "\u202d"];
 
 const zCharMatch = new RegExp(`[${zSet.join("")}]+`, "g");
 
-export const filterZChars: FilterZChars = (chars) => chars.match(zCharMatch);
+export const filterZChars: T.FilterZChars = (chars) => chars.match(zCharMatch);
 
-export const toZChars: ToZChars = (letter) => {
+export const toZChars: T.ToZChars = (letter) => {
   const codeRef = letter.charCodeAt(0);
   const zIndexes = codeRef.toString(zSet.length).split("");
   return zIndexes.map((zIndex) => zSet[Number(zIndex)]);
 };
 
-export const toCodePoint: ToCodePoint = (zs: string[]) => {
+export const toCodePoint: T.ToCodePoint = (zs) => {
   const indexes = zs.map((l) => zSet.indexOf(l));
   return parseInt(indexes.join(""), zSet.length);
 };
 
-export const splitEnd: SplitEnd = (text, count) => {
+export const splitEnd: T.SplitEnd = (text, count) => {
   const head = text.slice(0, -count);
   const end = text.slice(-count);
   return head ? [head, end] : [end, ""];
 };
 
-export const splitUp: SplitUp = (text, count) => {
+export const splitUp: T.SplitUp = (text, count) => {
   const { floor, max } = Math;
 
   const minCount = max(1, count);
@@ -38,7 +40,7 @@ export const splitUp: SplitUp = (text, count) => {
   return tail ? matches.concat(tail) : matches;
 };
 
-export const splitForZChars: SplitForZChars = (text, count) => {
+export const splitForZChars: T.SplitForZChars = (text, count) => {
   if (count <= 1) {
     return [text];
   }
@@ -47,22 +49,22 @@ export const splitForZChars: SplitForZChars = (text, count) => {
   return tail ? [...groups, tail] : [...groups];
 };
 
-export const interpolate: Interpolate = (text, zChars) => {
+export const interpolate: T.Interpolate = (text, zChars) => {
   const chars = text.split("");
   const interpolated = chars.map((c, i) => c.concat(zChars[i] || ""));
   return interpolated.join("");
 };
 
-export const canEncode: CanEncode = (text, toEncode) => {
+export const canEncode: T.CanEncode = (text, toEncode) => {
   if (text.length > toEncode.length) {
     return true;
   }
   return false;
 };
 
-export const decode: Decode = (v) => v;
+export const decode: T.Decode = (v) => v;
 
-export const encode: Encode = (text, toEncode) => {
+export const encode: T.Encode = (text, toEncode) => {
   if (!canEncode(text, toEncode)) {
     return text;
   }

@@ -1,19 +1,19 @@
-type SplitForZChars = (text: string, count: number) => string[];
+export type SplitForZChars = (text: string, count: number) => string[];
 
-type SplitEnd = (toSplit: string, tailCount: number) => [string, string];
+export type SplitEnd = (toSplit: string, tailCount: number) => [string, string];
 
-type SplitUp = (toSplit: string, count: number) => string[];
+export type SplitUp = (toSplit: string, count: number) => string[];
 
-type FilterZChars = (chars: string) => string[] | null;
+export type FilterZChars = (chars: string) => string[] | null;
 
-type ToZChars = (chars: string) => string[];
+export type ToZChars = (chars: string) => string[];
 
-type ToCodePoint = (set: string[]) => number;
+export type ToCodePoint = (set: string[]) => number;
 
-type Interpolate = (text: string, zChars: string[]) => string;
+export type Interpolate = (text: string, zChars: string[]) => string;
 
-type CanEncode = (text: string, toEncode: string) => boolean;
+export type CanEncode = (text: string, toEncode: string) => boolean;
 
-type Decode = (text: string, toDecode: string) => string;
+export type Decode = (text: string, toDecode: string) => string;
 
-type Encode = (text: string, toEncode: string) => any;
+export type Encode = (text: string, toEncode: string) => any;
