@@ -9,13 +9,18 @@ const zCharMatch = new RegExp(`[${zSet.join("")}]+`, "g");
 
 export const filterZChars: T.FilterZChars = (chars) => chars.match(zCharMatch);
 
-export const toZChars: T.ToZChars = (letter) => {
+export const encodeLetter: T.EncodeLetter = (letter) => {
   const codeRef = letter.charCodeAt(0);
-  const zIndexes = codeRef.toString(zSet.length).split("");
-  return zIndexes.map((zIndex) => zSet[Number(zIndex)]);
+  const zPointers = codeRef.toString(zSet.length).split("");
+  const pointerToZ = (zIndex: string) => zSet[Number(zIndex)];
+  return zPointers.map(pointerToZ).join("");
 };
 
-export const toCodePoint: T.ToCodePoint = (zs) => {
+export const encodeEach = (toEncode: string): string[] => {
+  return toEncode.split("").map(encodeLetter);
+};
+
+export const codePoint: T.CodePoint = (zs) => {
   const indexes = zs.map((l) => zSet.indexOf(l));
   return parseInt(indexes.join(""), zSet.length);
 };
@@ -68,6 +73,6 @@ export const encode: T.Encode = (text, toEncode) => {
   if (!canEncode(text, toEncode)) {
     return text;
   }
-  const zChars = toZChars(toEncode);
-  return interpolate(text, zChars);
+  const zGroups = encodeEach(toEncode);
+  return interpolate(text, zGroups);
 };

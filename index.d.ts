@@ -6,9 +6,9 @@ export type SplitUp = (toSplit: string, count: number) => string[];
 
 export type FilterZChars = (chars: string) => string[] | null;
 
-export type ToZChars = (chars: string) => string[];
+export type EncodeLetter = (chars: string) => string;
 
-export type ToCodePoint = (set: string[]) => number;
+export type CodePoint = (set: string[]) => number;
 
 export type Interpolate = (text: string, zChars: string[]) => string;
 

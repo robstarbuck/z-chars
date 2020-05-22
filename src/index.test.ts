@@ -6,13 +6,13 @@ const zChars = t.zSet;
 const letter = "A";
 
 test("Encode to ZChars", () => {
-  const test = t.toZChars(letter);
+  const test = t.encodeLetter(letter);
   const expected = expect.arrayContaining(zChars);
   expect(test).toEqual(expected);
 });
 
 test("Decode to Codepoint", () => {
-  const test = t.toCodePoint(t.toZChars(letter));
+  const test = t.codePoint(t.encodeLetter(letter).split(''));
   const expected = letter.charCodeAt(0);
   expect(test).toEqual(expected);
 });
@@ -20,9 +20,9 @@ test("Decode to Codepoint", () => {
 test("Count interpolated zChars", () => {
   const str = [
     "A",
-    t.toZChars(letter).join(""),
+    t.encodeLetter(letter).join(""),
     "A",
-    t.toZChars(letter).join(""),
+    t.encodeLetter(letter).join(""),
     "A",
   ].join("");
   const test = t.filterZChars(str);
