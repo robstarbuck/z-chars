@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "jest --watch" 
+    "start": "jest --watch --silent" 
   },
   "devDependencies": {
     "@types/jest": "^25.2.2",
