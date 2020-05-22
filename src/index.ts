@@ -73,6 +73,5 @@ export const encode: T.Encode = (text, toEncode) => {
   if (!canEncode(text, toEncode)) {
     return text;
   }
-  const zGroups = encodeEach(toEncode);
-  return interpolate(text, zGroups);
+  return interpolate(text, encodeEach(toEncode));
 };
