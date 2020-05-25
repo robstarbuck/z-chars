@@ -67,11 +67,11 @@ const bigGroups: Test = [
   ["ABCDEFGHI", 2, ["ABCD", "EFGHI"]],
   ["ABCD", 3, ["A", "B", "CD"]],
   ["ABCDEFGHIJ", 3, ["ABC", "DEF", "GHIJ"]],
-]
+];
 
 const emoji: Test = [
   ["🍑🍑", 2, ["🍑", "🍑"]]
-]
+];
 
 test.each([
   ...misuse,
@@ -79,7 +79,7 @@ test.each([
   ...evenGroups,
   ...emoji,
 ])("splitUp %s into %i", (a, b, expected) => {
-  const test = t.splitUp(a, b);
+  const test = t.splitInto(a, b);
   expect(test).toMatchObject(expected);
 });
 
@@ -133,7 +133,7 @@ test.each([
   ["ABCDE", "ZYXW"],
   ["ABCD", "🍑🍑🍑"],
   ["A🍑C🍆E", "ZYXW"],
-  ["ABCDEFGH", `👨‍👨‍👧‍👧`],
+  ["ABCDEFGH", "👨‍👨‍👧‍👧"],
 ])("decode matches input", (subject, message) => {
   const encoded = t.encode(subject, message);
   const test = t.decode(encoded);

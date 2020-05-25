@@ -12,26 +12,7 @@ export const zCharMatch = new RegExp(
   "g"
 );
 
-export const zCharsIn: T.FilterZChars = (chars) => chars.match(zCharMatch);
-
-export const encodeLetter: T.EncodeLetter = (letter) => {
-  const codeRef = letter.codePointAt(0);
-  const zPointers = codeRef?.toString(zSet.length).split("");
-  const pointerToZ = (zIndex: string) => zSet[Number(zIndex)];
-  return zPointers?.map(pointerToZ).join("") || "";
-};
-
-export const encodeEach = (toEncode: string): string[] => {
-  const letters = splitUnicode(toEncode);
-  return letters ? letters.map(encodeLetter) : [""];
-};
-
-export const codePoint: T.CodePoint = (zs) => {
-  const indexes = zs.map((l) => zSet.indexOf(l));
-  return parseInt(indexes.join(""), zSet.length);
-};
-
-export const splitUnicode: T.SplitUnicode = (text) => {
+export const splitChars: T.SplitUnicode = (text) => {
   return text.match(/./gu) || [""];
 };
 
@@ -41,7 +22,7 @@ export const splitEnd: T.SplitEnd = (text, count) => {
   return head ? [head, end] : [end, ""];
 };
 
-export const splitUp: T.SplitUp = (text, count) => {
+export const splitInto: T.SplitInto = (text, count) => {
   const { floor, max } = Math;
 
   const minCount = max(1, count);
@@ -60,7 +41,7 @@ export const splitForZChars: T.SplitForZChars = (text, count) => {
     return [text];
   }
   const [head, tail] = splitEnd(text, 1);
-  const groups = head ? splitUp(head, count - 1) : [];
+  const groups = head ? splitInto(head, count - 1) : [];
   return tail ? [...groups, tail] : [...groups];
 };
 
@@ -70,11 +51,36 @@ export const interpolate: T.Interpolate = (text, zChars) => {
   return interpolated.join("");
 };
 
+export const codePoint: T.CodePoint = (zChars) => {
+  const indexes = zChars.map((l) => zSet.indexOf(l));
+  return parseInt(indexes.join(""), zSet.length);
+};
+
 export const canEncode: T.CanEncode = (text, toEncode) => {
-  if (splitUnicode(text).length > splitUnicode(toEncode).length) {
+  if (splitChars(text).length > splitChars(toEncode).length) {
     return true;
   }
   return false;
+};
+
+export const encodeLetter: T.EncodeLetter = (letter) => {
+  const codeRef = letter.codePointAt(0);
+  const zPointers = codeRef?.toString(zSet.length).split("");
+  const pointerToZ = (zIndex: string) => zSet[Number(zIndex)];
+  return zPointers?.map(pointerToZ).join("") || "";
+};
+
+export const encodeEach = (toEncode: string): string[] => {
+  const letters = splitChars(toEncode);
+  return letters ? letters.map(encodeLetter) : [""];
+};
+
+export const encode: T.Encode = (text, toEncode) => {
+  if (!canEncode(text, toEncode)) {
+    return text;
+  }
+  const encoded = interpolate(text, encodeEach(toEncode));
+  return encoded.concat(terminator);
 };
 
 export const decode: T.Decode = (toDecode) => {
@@ -84,11 +90,4 @@ export const decode: T.Decode = (toDecode) => {
   }
   const codePoints = zSet?.map((z) => codePoint(z.split("")));
   return String.fromCodePoint(...codePoints);
-};
-
-export const encode: T.Encode = (text, toEncode) => {
-  if (!canEncode(text, toEncode)) {
-    return text;
-  }
-  return interpolate(text, encodeEach(toEncode));
 };

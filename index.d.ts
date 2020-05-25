@@ -4,9 +4,7 @@ export type SplitForZChars = (text: string, count: number) => string[];
 
 export type SplitEnd = (toSplit: string, tailCount: number) => [string, string];
 
-export type SplitUp = (toSplit: string, count: number) => string[];
-
-export type FilterZChars = (chars: string) => string[] | null;
+export type SplitInto = (toSplit: string, count: number) => string[];
 
 export type EncodeLetter = (chars: string) => string;
 
@@ -16,6 +14,6 @@ export type Interpolate = (text: string, zChars: string[]) => string;
 
 export type CanEncode = (text: string, toEncode: string) => boolean;
 
-export type Decode = (toDecode: string) => string;
-
 export type Encode = (text: string, toEncode: string) => string;
+
+export type Decode = (toDecode: string) => string;
