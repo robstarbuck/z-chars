@@ -5,11 +5,11 @@ const zChars = t.zSet;
 
 const letter = "A";
 
-// test("Encode to ZChars", () => {
-//   const test = t.encodeLetter(letter);
-//   const expected = expect.arrayContaining(zChars);
-//   expect(test).toEqual(expected);
-// });
+test("encodeLetter to ZChars", () => {
+  const test = t.encodeLetter(letter);
+  const expected = expect.arrayContaining(zChars);
+  expect(test.split('')).toEqual(expected);
+});
 
 test("Decode to Codepoint", () => {
   const test = t.codePoint(t.encodeLetter(letter).split(''));
@@ -25,7 +25,7 @@ test("Count interpolated zChars", () => {
     t.encodeLetter(letter),
     "A",
   ].join("");
-  const test = t.filterZChars(str);
+  const test = t.zCharsIn(str);
   expect(test?.length).toEqual(2);
 });
 
@@ -37,7 +37,7 @@ describe("splitEnd (3 chars)", () => {
     ["AB", 2, ["AB", ""]],
     ["ABC", 2, ["A", "BC"]],
     ["ABCDE", 2, ["ABC", "DE"]],
-  ])("Split %s into %i", (a, b, expected) => {
+  ])("splitEnd %s into %i", (a, b, expected) => {
     const test = t.splitEnd(a, b);
     expect(test).toMatchObject(expected);
   });
@@ -69,10 +69,15 @@ const bigGroups: Test = [
   ["ABCDEFGHIJ", 3, ["ABC", "DEF", "GHIJ"]],
 ]
 
+const emoji: Test = [
+  ["🍑🍑", 2, ["🍑", "🍑"]]
+]
+
 test.each([
   ...misuse,
   ...bigGroups,
-  ...evenGroups
+  ...evenGroups,
+  ...emoji,
 ])("splitUp %s into %i", (a, b, expected) => {
   const test = t.splitUp(a, b);
   expect(test).toMatchObject(expected);
@@ -84,7 +89,7 @@ test.each([
   ["ABC", 2, ["AB", "C"]],
   ["ABC", 3, ["A", "B", "C"]],
   ["ABC", 5, ["A", "B", "C"]],
-])("Split %s into %i (3 chars)", (a, b, expected) => {
+])("splitForZChars %s into %i (3 chars)", (a, b, expected) => {
   const test = t.splitForZChars(a, b);
   expect(test).toMatchObject(expected);
 });
@@ -96,16 +101,41 @@ test.each([
   ["ABCDE", 3, ["AB", "CD", "E"]],
   ["ABCDE", 4, ["A", "B", "CD", "E"]],
   ["ABCDE", 9, ["A", "B", "C", "D", "E"]]
-])("Split %s into %i (5 chars)", (a, b, expected) => {
+])("splitForZChars %s into %i (5 chars)", (a, b, expected) => {
   const test = t.splitForZChars(a, b);
   expect(test).toMatchObject(expected);
 });
 
 
-// test.each([
-//   ["ABCDE", "INO", ["ABCDE"]],
-// ])("Encode %s into %s (5 chars)", (a, b, expected) => {
-//   const test = t.encode(a, b);
-//   console.log(test);
-//   // expect(test).toMatchObject(expected);
-// });
+test("encode contains Zchars", () => {
+  const subject = "ABCDE";
+  const message = "MSG";
+  const test = t.encode(subject, message);
+  expect(test).toMatch(t.zCharMatch);
+});
+
+test("decode matches hardcoded", () => {
+  const test = t.decode(`A‭‭‪‭B‪⁦⁦⁦‭C‭‪‭‭DE`);
+  const expected = "MSG";
+  expect(test).toEqual(expected);
+});
+
+test("decode matches encode", () => {
+  const subject = "ABCDE";
+  const message = "MSG"
+  const encoded = t.encode(subject, message);
+  const test = t.decode(encoded);
+  expect(test).toEqual(message);
+});
+
+test.each([
+  ["ABCDE", "ZYXW"],
+  ["ABCDE", "ZYXW"],
+  ["ABCD", "🍑🍑🍑"],
+  ["A🍑C🍆E", "ZYXW"],
+  ["ABCDEFGH", `👨‍👨‍👧‍👧`],
+])("decode matches input", (subject, message) => {
+  const encoded = t.encode(subject, message);
+  const test = t.decode(encoded);
+  expect(test).toEqual(message);
+});

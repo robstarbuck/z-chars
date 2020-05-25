@@ -5,24 +5,34 @@ const terminator = "\u2069";
 
 export const zSet = ["\u2066", "\u202a", "\u202d"];
 
-const zCharMatch = new RegExp(`[${zSet.join("")}]+`, "g");
+const validSetCount = 4;
 
-export const filterZChars: T.FilterZChars = (chars) => chars.match(zCharMatch);
+export const zCharMatch = new RegExp(
+  `[${zSet.join("")}]{${validSetCount},}`,
+  "g"
+);
+
+export const zCharsIn: T.FilterZChars = (chars) => chars.match(zCharMatch);
 
 export const encodeLetter: T.EncodeLetter = (letter) => {
-  const codeRef = letter.charCodeAt(0);
-  const zPointers = codeRef.toString(zSet.length).split("");
+  const codeRef = letter.codePointAt(0);
+  const zPointers = codeRef?.toString(zSet.length).split("");
   const pointerToZ = (zIndex: string) => zSet[Number(zIndex)];
-  return zPointers.map(pointerToZ).join("");
+  return zPointers?.map(pointerToZ).join("") || "";
 };
 
 export const encodeEach = (toEncode: string): string[] => {
-  return toEncode.split("").map(encodeLetter);
+  const letters = splitUnicode(toEncode);
+  return letters ? letters.map(encodeLetter) : [""];
 };
 
 export const codePoint: T.CodePoint = (zs) => {
   const indexes = zs.map((l) => zSet.indexOf(l));
   return parseInt(indexes.join(""), zSet.length);
+};
+
+export const splitUnicode: T.SplitUnicode = (text) => {
+  return text.match(/./gu) || [""];
 };
 
 export const splitEnd: T.SplitEnd = (text, count) => {
@@ -61,13 +71,20 @@ export const interpolate: T.Interpolate = (text, zChars) => {
 };
 
 export const canEncode: T.CanEncode = (text, toEncode) => {
-  if (text.length > toEncode.length) {
+  if (splitUnicode(text).length > splitUnicode(toEncode).length) {
     return true;
   }
   return false;
 };
 
-export const decode: T.Decode = (v) => v;
+export const decode: T.Decode = (toDecode) => {
+  const zSet = toDecode.match(zCharMatch);
+  if (!zSet) {
+    return "";
+  }
+  const codePoints = zSet?.map((z) => codePoint(z.split("")));
+  return String.fromCodePoint(...codePoints);
+};
 
 export const encode: T.Encode = (text, toEncode) => {
   if (!canEncode(text, toEncode)) {
