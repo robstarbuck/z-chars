@@ -25,7 +25,7 @@ test("Count interpolated zChars", () => {
     t.encodeLetter(letter),
     "A",
   ].join("");
-  const test = t.zCharsIn(str);
+  const test = str.match(t.zCharMatch);
   expect(test?.length).toEqual(2);
 });
 
@@ -90,7 +90,7 @@ test.each([
   ["ABC", 3, ["A", "B", "C"]],
   ["ABC", 5, ["A", "B", "C"]],
 ])("splitForZChars %s into %i (3 chars)", (a, b, expected) => {
-  const test = t.splitForZChars(a, b);
+  const test = t.splitAcross(a, b);
   expect(test).toMatchObject(expected);
 });
 
@@ -102,7 +102,7 @@ test.each([
   ["ABCDE", 4, ["A", "B", "CD", "E"]],
   ["ABCDE", 9, ["A", "B", "C", "D", "E"]]
 ])("splitForZChars %s into %i (5 chars)", (a, b, expected) => {
-  const test = t.splitForZChars(a, b);
+  const test = t.splitAcross(a, b);
   expect(test).toMatchObject(expected);
 });
 
@@ -112,6 +112,14 @@ test("encode contains Zchars", () => {
   const message = "MSG";
   const test = t.encode(subject, message);
   expect(test).toMatch(t.zCharMatch);
+});
+
+test.each([
+  ["ABCDE", "ABCDE"],
+  ["A", "👨‍👨‍👧‍👧"],
+])("encode returns subject", (subject, message) => {
+  const test = t.encode(subject, message);
+  expect(test).toEqual(subject);
 });
 
 test("decode matches hardcoded", () => {
@@ -139,3 +147,4 @@ test.each([
   const test = t.decode(encoded);
   expect(test).toEqual(message);
 });
+

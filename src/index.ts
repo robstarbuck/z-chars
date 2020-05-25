@@ -36,7 +36,7 @@ export const splitInto: T.SplitInto = (text, count) => {
   return tail ? matches.concat(tail) : matches;
 };
 
-export const splitForZChars: T.SplitForZChars = (text, count) => {
+export const splitAcross: T.SplitAcross = (text, count) => {
   if (count <= 1) {
     return [text];
   }
