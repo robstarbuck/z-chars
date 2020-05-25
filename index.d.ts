@@ -1,6 +1,6 @@
 export type SplitUnicode = (text: string) => string[];
 
-export type SplitForZChars = (text: string, count: number) => string[];
+export type SplitAcross = (text: string, count: number) => string[];
 
 export type SplitEnd = (toSplit: string, tailCount: number) => [string, string];
 

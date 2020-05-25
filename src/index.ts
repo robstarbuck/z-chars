@@ -13,7 +13,7 @@ export const zCharMatch = new RegExp(
 );
 
 export const splitChars: T.SplitUnicode = (text) => {
-  return text.match(/./gu) || [""];
+  return text?.match(/./gu) || [""];
 };
 
 export const splitEnd: T.SplitEnd = (text, count) => {
