@@ -1,5 +1,7 @@
 import { zCharMatch, codePoint } from "./z-chars";
 
+type Decode = (toDecode: string) => string;
+
 const decode: Decode = (toDecode) => {
   const zSet = toDecode.match(zCharMatch);
   if (!zSet) {

@@ -1,6 +1,16 @@
 import { splitAcross, splitChars } from "./split";
 import { terminator, zSet } from "./z-chars";
 
+type Interpolate = (text: string, zChars: string[]) => string;
+
+type CanEncode = (text: string, toEncode: string) => boolean;
+
+type EncodeLetter = (chars: string) => string;
+
+type EncodeEach = (chars: string) => string[];
+
+type Encode = (text: string, toEncode: string) => string;
+
 const interpolate: Interpolate = (text, zChars) => {
   const chars = splitAcross(text, splitChars(text).length);
   const interpolated = chars.map((c, i) => c.concat(zChars[i] || ""));

@@ -1,5 +1,7 @@
 const terminator = "\u2069";
 
+type CodePoint = (set: string[]) => number;
+
 const zSet = ["\u2066", "\u202a", "\u202d"];
 
 const validSetMin = 4;
