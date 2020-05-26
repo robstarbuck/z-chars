@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "main": "./dist/index.js",
+  "files": ["./dist"],
   "scripts": {
     "start": "jest --watch",
     "build": "rm -rf dist && tsc -p ."
