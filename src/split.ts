@@ -1,0 +1,34 @@
+const splitChars: SplitUnicode = (text) => {
+  return text?.match(/./gu) || [""];
+};
+
+const splitEnd: SplitEnd = (text, count) => {
+  const head = text.slice(0, -count);
+  const end = text.slice(-count);
+  return head ? [head, end] : [end, ""];
+};
+
+const splitInto: SplitInto = (text, count) => {
+  const { floor, max } = Math;
+
+  const minCount = max(1, count);
+  const groupLen = max(1, floor(text.length / minCount));
+  const groupMatch = new RegExp(`.{${groupLen}}`, "g");
+
+  const tailLen = groupLen + (text.length % count);
+  const [head, tail] = splitEnd(text, tailLen);
+
+  const matches = head.match(groupMatch) || [""];
+  return tail ? matches.concat(tail) : matches;
+};
+
+const splitAcross: SplitAcross = (text, count) => {
+  if (count <= 1) {
+    return [text];
+  }
+  const [head, tail] = splitEnd(text, 1);
+  const groups = head ? splitInto(head, count - 1) : [];
+  return tail ? [...groups, tail] : [...groups];
+};
+
+export { splitChars, splitEnd, splitInto, splitAcross };

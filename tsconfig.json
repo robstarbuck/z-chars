@@ -6,9 +6,9 @@
       "outDir": "./dist",
       "baseUrl": "./src",
       "strict": true,
-      "declaration": true
+      // "declaration": true
   },
   "include": [
-      "src/**/*", "index.d.ts"
+      "src/**/*"
   ]
 }
