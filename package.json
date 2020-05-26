@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "license": "MIT",
   "main": "dist/index.js",
+  "types": "dist",
   "scripts": {
-    "start": "jest --watch" 
+    "start": "jest --watch",
+    "build": "tsc -p ."
   },
   "devDependencies": {
     "@types/jest": "^25.2.2",
