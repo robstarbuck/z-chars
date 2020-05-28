@@ -12,7 +12,7 @@ type EncodeEach = (chars: string) => string[];
 type Encode = (text: string, toEncode: string) => string;
 
 const interpolate: Interpolate = (text, zChars) => {
-  const chars = splitAcross(text, splitChars(text).length);
+  const chars = splitAcross(text, zChars.length + 1);
   const interpolated = chars.map((c, i) => c.concat(zChars[i] || ""));
   return interpolated.join("");
 };
