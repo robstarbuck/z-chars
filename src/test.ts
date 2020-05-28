@@ -65,18 +65,18 @@ const bigGroups: Test = [
   ["ABCDE", 2, ["AB", "CDE"]],
   ["ABCDEFGHI", 2, ["ABCD", "EFGHI"]],
   ["ABCD", 3, ["A", "B", "CD"]],
+  // [`ABCD`, 2, ["A"]],
   ["ABCDEFGHIJ", 3, ["ABC", "DEF", "GHIJ"]],
 ];
 
+const newLines: Test = [[`AB\nBC`, 2, ["AB", "\nBC"]]];
+
 const emoji: Test = [["🍑🍑", 2, ["🍑", "🍑"]]];
 
-test.each([...misuse, ...bigGroups, ...evenGroups, ...emoji])(
-  "splitUp %s into %i",
-  (a, b, expected) => {
-    const test = split.splitInto(a, b);
-    expect(test).toMatchObject(expected);
-  }
-);
+test.only.each([...newLines])("splitUp %s into %i", (a, b, expected) => {
+  const test = split.splitInto(a, b);
+  expect(test).toMatchObject(expected);
+});
 
 test.each([
   ["ABC", 0, ["ABC"]],
@@ -100,6 +100,14 @@ test.each([
   const test = split.splitAcross(a, b);
   expect(test).toMatchObject(expected);
 });
+
+// test.each([
+//   [`AB\nCDE`, 0, ["AB\nCDE"]],
+//   [`AB\nCDE`, 2, ["AB\nCDE"]],
+// ])("TEST4 splitForZChars %s into %i (5 chars)", (a, b, expected) => {
+//   const test = split.splitAcross(a, b);
+//   expect(test).toMatchObject(expected);
+// });
 
 test("encode contains Zchars", () => {
   const subject = "ABCDE";
