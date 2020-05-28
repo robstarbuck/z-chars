@@ -7,7 +7,7 @@ type SplitEnd = (toSplit: string, tailCount: number) => [string, string];
 type SplitInto = (toSplit: string, count: number) => string[];
 
 const splitChars: SplitUnicode = (text) => {
-  return text?.match(/./gmu) || [""];
+  return text?.match(/[\s\S]/gu) || [""];
 };
 
 const splitEnd: SplitEnd = (text, count) => {
@@ -21,13 +21,12 @@ const splitInto: SplitInto = (text, count) => {
 
   const minCount = max(1, count);
   const groupLen = max(1, floor(text.length / minCount));
-  const groupMatch = new RegExp(`[\s\S]{${groupLen}}`, "g");
+  const groupMatch = new RegExp(`[\\s\\S]{${groupLen}}`, "g");
 
   const tailLen = groupLen + (text.length % count);
   const [head, tail] = splitEnd(text, tailLen);
 
   const matches = head.match(groupMatch) || [""];
-  console.log(matches, "matches");
   return tail ? matches.concat(tail) : matches;
 };
 

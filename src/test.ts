@@ -73,7 +73,7 @@ const newLines: Test = [[`AB\nBC`, 2, ["AB", "\nBC"]]];
 
 const emoji: Test = [["🍑🍑", 2, ["🍑", "🍑"]]];
 
-test.only.each([...newLines])("splitUp %s into %i", (a, b, expected) => {
+test.each([...newLines])("splitUp %s into %i", (a, b, expected) => {
   const test = split.splitInto(a, b);
   expect(test).toMatchObject(expected);
 });
@@ -138,8 +138,8 @@ test("decode matches encode", () => {
   expect(test).toEqual(message);
 });
 
-test.each([
-  ["ABCDE", "ZYXW"],
+test.only.each([
+  ["ABCDEFGHI", "A\nBC"],
   ["ABCDE", "ZYXW"],
   ["ABCD", "🍑🍑🍑"],
   ["A🍑C🍆E", "ZYXW"],
