@@ -1,4 +1,4 @@
-import { zCharMatch, codePoint } from "./z-chars";
+import { zCharMatch, codePoint } from "../z-chars";
 
 type Decode = (toDecode: string) => string;
 

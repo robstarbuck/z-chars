@@ -4,7 +4,7 @@ type CodePoint = (set: string[]) => number;
 
 const zSet = ["\u2066", "\u202a", "\u202d"];
 
-const zCharMatch = new RegExp(`[${zSet.join("")}]+`, "gm");
+const zCharMatch = new RegExp(`[${zSet.join("")}]+`, "g");
 
 const codePoint: CodePoint = (zChars) => {
   const indexes = zChars.map((l) => zSet.indexOf(l));
