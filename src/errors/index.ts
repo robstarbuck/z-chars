@@ -34,3 +34,5 @@ const errors = {
 };
 
 export type Errorcode = keyof typeof errors;
+
+export { errors };

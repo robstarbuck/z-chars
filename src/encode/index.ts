@@ -48,7 +48,7 @@ const canEncode: CanEncode = (text, toEncode, onError?) => {
     return false;
   }
 
-  if (textLen < encodeLen) {
+  if (encodeLen >= textLen) {
     onError?.("B/LENG");
     return false;
   }
