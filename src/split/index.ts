@@ -7,7 +7,7 @@ type SplitEnd = (toSplit: string, tailCount: number) => [string, string];
 type SplitInto = (toSplit: string, count: number) => string[];
 
 const splitChars: SplitUnicode = (text) => {
-  return text?.match(/[\s\S]/gu) || [""];
+  return text?.match(/[\s\S]/gu) || [];
 };
 
 const splitEnd: SplitEnd = (text, count) => {
