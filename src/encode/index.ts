@@ -1,59 +1,63 @@
 import { splitAcross, splitChars } from "../split";
 import { terminator, zSet, zCharMatch } from "../z-chars";
-import { Errorcode } from "errors";
+import { Statuscode, status } from "../status";
 
-type Interpolate = (text: string, zChars: string[]) => string;
+type Interpolate = (subject: string, zChars: string[]) => string;
 
-type _OnError = (error: Errorcode) => void;
+type _OnError = (error: Statuscode) => void;
 
-type CanEncode = (
-  text: string,
-  toEncode: string,
-  onError?: _OnError
-) => boolean;
+type CanEncode = (subject: string, toEncode: string) => boolean;
+
+type TestEncoding = (subject: string, toEncode: string) => Statuscode;
 
 type EncodeLetter = (chars: string) => string;
 
 type EncodeEach = (chars: string) => string[];
 
-type Encode = (text: string, toEncode: string) => string;
+type Encode = (
+  subject: string,
+  toEncode: string,
+  onError?: _OnError
+) => string | null;
 
-const interpolate: Interpolate = (text, zChars) => {
-  const chars = splitAcross(text, zChars.length + 1);
+type MustEncode = (subject: string, toEncode: string) => string;
+
+const interpolate: Interpolate = (subject, zChars) => {
+  const chars = splitAcross(subject, zChars.length + 1);
   const interpolated = chars.map((c, i) => c.concat(zChars[i] || ""));
   return interpolated.join("");
 };
 
-const canEncode: CanEncode = (text, toEncode, onError?) => {
-  const textLen = splitChars(text).length;
+const encodeStatus: TestEncoding = (subject, toEncode) => {
+  const textLen = splitChars(subject).length;
   const encodeLen = splitChars(toEncode).length;
 
   if (textLen === 0) {
-    onError?.("A/EMPT");
-    return false;
+    return "EMPTY-SUBJECT";
   }
 
   if (encodeLen === 0) {
-    onError?.("B/EMPT");
-    return false;
+    return "EMPTY-ENCODE";
   }
 
-  if (text.match(zCharMatch)) {
-    onError?.("A/ZCHR");
-    return false;
+  if (subject.match(zCharMatch)) {
+    return "ZCHR-SUBJECT";
   }
 
   if (toEncode.match(zCharMatch)) {
-    onError?.("B/ZCHR");
-    return false;
+    return "ZCHR-ENCODE";
   }
 
   if (encodeLen >= textLen) {
-    onError?.("B/LENG");
-    return false;
+    return "LEN-ENCODE";
   }
 
-  return true;
+  return "OK";
+};
+
+const canEncode: CanEncode = (subject, toEncode) => {
+  const statusKey = encodeStatus(subject, toEncode);
+  return status[statusKey].valid;
 };
 
 const encodeLetter: EncodeLetter = (letter) => {
@@ -68,17 +72,27 @@ const encodeEach: EncodeEach = (toEncode) => {
   return letters ? letters.map(encodeLetter) : [""];
 };
 
-const encode: Encode = (text, toEncode) => {
-  if (!canEncode(text, toEncode)) {
-    return text;
+const encode: Encode = (subject, toEncode, onError) => {
+  const statusKey = encodeStatus(subject, toEncode);
+  if (!status[statusKey].valid) {
+    onError?.(statusKey);
+    return null;
   }
-  const encoded = interpolate(text, encodeEach(toEncode));
+  const encoded = interpolate(subject, encodeEach(toEncode));
   return encoded.concat(terminator);
 };
 
-const mustEncode: Encode = (text, toEncode) => {
-  const encoded = interpolate(text, encodeEach(toEncode));
+const mustEncode: MustEncode = (subject, toEncode) => {
+  const encoded = interpolate(subject, encodeEach(toEncode));
   return encoded.concat(terminator);
 };
 
-export { interpolate, canEncode, encodeLetter, encodeEach, encode, mustEncode };
+export {
+  interpolate,
+  encodeLetter,
+  encodeEach,
+  encodeStatus,
+  canEncode,
+  encode,
+  mustEncode,
+};

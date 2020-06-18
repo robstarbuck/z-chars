@@ -11,7 +11,7 @@ test("encode contains Zchars", () => {
 test.each([
   ["ABCDE", "ABCDE"],
   ["A", "👨‍👨‍👧‍👧"],
-])("encode returns subject", (subject, message) => {
+])("encode returns null", (subject, message) => {
   const test = encode(subject, message);
-  expect(test).toEqual(subject);
+  expect(test).toEqual(null);
 });

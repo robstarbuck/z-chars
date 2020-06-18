@@ -1,6 +1,6 @@
 import { codePoint } from "../z-chars";
-import { encodeLetter, encode } from "../encode";
-import { decode } from "../decode";
+import { encodeLetter, encode, mustEncode } from "../encode";
+import { decode, mustDecode } from "../decode";
 
 test("Decode to Codepoint", () => {
   const letter = "A";
@@ -10,7 +10,7 @@ test("Decode to Codepoint", () => {
 });
 
 test("decode matches hardcoded", () => {
-  const test = decode(`A‭‭‪‭B‪⁦⁦⁦‭C‭‪‭‭DE`);
+  const test = mustDecode(`A‭‭‪‭B‪⁦⁦⁦‭C‭‪‭‭DE`);
   const expected = "MSG";
   expect(test).toEqual(expected);
 });
@@ -18,8 +18,8 @@ test("decode matches hardcoded", () => {
 test("decode matches encode", () => {
   const subject = "ABCDE";
   const message = "MSG";
-  const encoded = encode(subject, message);
-  const test = decode(encoded);
+  const encoded = mustEncode(subject, message);
+  const test = mustDecode(encoded);
   expect(test).toEqual(message);
 });
 
@@ -30,7 +30,7 @@ test.each([
   ["A🍑C🍆E", "ZYXW"],
   ["ABCDEFGH", "👨‍👨‍👧‍👧"],
 ])("decode matches input", (subject, message) => {
-  const encoded = encode(subject, message);
-  const test = decode(encoded);
+  const encoded = mustEncode(subject, message);
+  const test = mustDecode(encoded);
   expect(test).toEqual(message);
 });

@@ -1,14 +1,44 @@
 import { zCharMatch, codePoint } from "../z-chars";
+import { Statuscode, status } from "../status";
 
-type Decode = (toDecode: string) => string;
+type _OnError = (error: Statuscode) => void;
+
+type Decode = (toDecode: string, onError: _OnError) => string | null;
+
+type MustDecode = (toDecode: string) => string;
+
+type CanDecode = (toDecode: string) => boolean;
+
+type TestDecoding = (toDecode: string) => Statuscode;
+
+const decodeStatus: TestDecoding = (toDecode) => {
+  if (toDecode.length === 0) {
+    return "EMPTY-DECODE";
+  }
+  if (!toDecode.match(zCharMatch)) {
+    return "ZCHR-DECODE";
+  }
+  return "OK";
+};
+
+const canDecode: CanDecode = (toDecode) => {
+  const statusKey = decodeStatus(toDecode);
+  return status[statusKey].valid;
+};
 
 const decode: Decode = (toDecode) => {
   const zSet = toDecode.match(zCharMatch);
   if (!zSet) {
-    return "";
+    return null;
   }
   const codePoints = zSet?.map((z) => codePoint(z.split("")));
   return String.fromCodePoint(...codePoints);
 };
 
-export { decode };
+const mustDecode: MustDecode = (toDecode) => {
+  const zSet = toDecode.match(zCharMatch);
+  const codePoints = zSet!.map((z) => codePoint(z.split("")));
+  return String.fromCodePoint(...codePoints);
+};
+
+export { decodeStatus, canDecode, decode, mustDecode };

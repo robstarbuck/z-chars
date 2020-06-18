@@ -1,5 +1,5 @@
 import { encode, mustEncode, canEncode } from "./encode";
 import { decode } from "./decode";
-import { errors, ErrorLevel } from "./errors";
+import { status, Status } from "./status";
 
-export { canEncode, encode, mustEncode, decode, errors, ErrorLevel };
+export { canEncode, encode, mustEncode, decode, status, Status };
