@@ -28,7 +28,7 @@ const interpolate: Interpolate = (subject, zChars) => {
   return interpolated.join("");
 };
 
-const encodeStatus: TestEncoding = (subject, toEncode) => {
+const testEncode: TestEncoding = (subject, toEncode) => {
   const textLen = splitChars(subject).length;
   const encodeLen = splitChars(toEncode).length;
 
@@ -56,7 +56,7 @@ const encodeStatus: TestEncoding = (subject, toEncode) => {
 };
 
 const canEncode: CanEncode = (subject, toEncode) => {
-  const statusKey = encodeStatus(subject, toEncode);
+  const statusKey = testEncode(subject, toEncode);
   return status[statusKey].valid;
 };
 
@@ -73,7 +73,7 @@ const encodeEach: EncodeEach = (toEncode) => {
 };
 
 const encode: Encode = (subject, toEncode, onError) => {
-  const statusKey = encodeStatus(subject, toEncode);
+  const statusKey = testEncode(subject, toEncode);
   if (!status[statusKey].valid) {
     onError?.(statusKey);
     return null;
@@ -91,7 +91,7 @@ export {
   interpolate,
   encodeLetter,
   encodeEach,
-  encodeStatus,
+  testEncode,
   canEncode,
   encode,
   mustEncode,

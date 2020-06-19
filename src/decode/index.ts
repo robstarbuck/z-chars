@@ -3,7 +3,7 @@ import { Statuscode, status } from "../status";
 
 type _OnError = (error: Statuscode) => void;
 
-type Decode = (toDecode: string, onError: _OnError) => string | null;
+type Decode = (toDecode: string, onError?: _OnError) => string | null;
 
 type MustDecode = (toDecode: string) => string;
 
@@ -11,7 +11,7 @@ type CanDecode = (toDecode: string) => boolean;
 
 type TestDecoding = (toDecode: string) => Statuscode;
 
-const decodeStatus: TestDecoding = (toDecode) => {
+const testDecode: TestDecoding = (toDecode) => {
   if (toDecode.length === 0) {
     return "EMPTY-DECODE";
   }
@@ -22,7 +22,7 @@ const decodeStatus: TestDecoding = (toDecode) => {
 };
 
 const canDecode: CanDecode = (toDecode) => {
-  const statusKey = decodeStatus(toDecode);
+  const statusKey = testDecode(toDecode);
   return status[statusKey].valid;
 };
 
@@ -41,4 +41,4 @@ const mustDecode: MustDecode = (toDecode) => {
   return String.fromCodePoint(...codePoints);
 };
 
-export { decodeStatus, canDecode, decode, mustDecode };
+export { testDecode, canDecode, decode, mustDecode };

@@ -1,5 +1,7 @@
-import { encode, mustEncode, canEncode } from "./encode";
-import { decode } from "./decode";
-import { status, Status } from "./status";
+import { canEncode, testEncode, encode, mustEncode } from "./encode";
+import { canDecode, testDecode, decode, mustDecode } from "./decode";
+import { status, ErrorStatus } from "./status";
 
-export { canEncode, encode, mustEncode, decode, status, Status };
+export { canEncode, testEncode, encode, mustEncode };
+export { canDecode, testDecode, decode, mustDecode };
+export { status, ErrorStatus };
