@@ -5,61 +5,62 @@ enum ErrorStatus {
   ERROR = 2,
 }
 
-const status = {
+const statusInfo = {
   ["OK"]: {
     valid: true,
     message: "OK",
-    level: ErrorStatus.OK,
+    errorLevel: ErrorStatus.OK,
     errorFrom: undefined,
   },
 
   ["EMPTY-SUBJECT"]: {
     valid: false,
     message: "Text is empty",
-    level: ErrorStatus.INFO,
+    errorLevel: ErrorStatus.INFO,
     errorFrom: "subject" as const,
   },
+
   ["ZCHR-SUBJECT"]: {
     valid: false,
     message: "Text contains encoded characters",
-    level: ErrorStatus.ERROR,
+    errorLevel: ErrorStatus.ERROR,
     errorFrom: "subject" as const,
   },
 
   ["EMPTY-ENCODE"]: {
     valid: false,
     message: "Text is empty",
-    level: ErrorStatus.INFO,
+    errorLevel: ErrorStatus.INFO,
     errorFrom: "encode" as const,
   },
   ["ZCHR-ENCODE"]: {
     valid: false,
     message: "Text contains encoded characters",
-    level: ErrorStatus.ERROR,
+    errorLevel: ErrorStatus.ERROR,
     errorFrom: "encode" as const,
   },
   ["LEN-ENCODE"]: {
     valid: false,
     message: "Text too long to be encoded",
-    level: ErrorStatus.WARN,
+    errorLevel: ErrorStatus.WARN,
     errorFrom: "encode" as const,
   },
 
   ["EMPTY-DECODE"]: {
     valid: false,
     message: "Text is empty",
-    level: ErrorStatus.INFO,
+    errorLevel: ErrorStatus.INFO,
     errorFrom: "decode" as const,
   },
 
   ["ZCHR-DECODE"]: {
     valid: false,
     message: "No encoded text",
-    level: ErrorStatus.WARN,
+    errorLevel: ErrorStatus.WARN,
     errorFrom: "decode" as const,
   },
 };
 
-export type Statuscode = keyof typeof status;
+export type Statuscode = keyof typeof statusInfo;
 
-export { status, ErrorStatus };
+export { statusInfo, ErrorStatus };

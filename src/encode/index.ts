@@ -1,6 +1,6 @@
 import { splitAcross, splitChars } from "../split";
 import { terminator, zSet, zCharMatch } from "../z-chars";
-import { Statuscode, status } from "../status";
+import { Statuscode, statusInfo } from "../status";
 
 type Interpolate = (subject: string, zChars: string[]) => string;
 
@@ -57,7 +57,7 @@ const testEncode: TestEncoding = (subject, toEncode) => {
 
 const canEncode: CanEncode = (subject, toEncode) => {
   const statusKey = testEncode(subject, toEncode);
-  return status[statusKey].valid;
+  return statusInfo[statusKey].valid;
 };
 
 const encodeLetter: EncodeLetter = (letter) => {
@@ -74,7 +74,7 @@ const encodeEach: EncodeEach = (toEncode) => {
 
 const encode: Encode = (subject, toEncode, onError) => {
   const statusKey = testEncode(subject, toEncode);
-  if (!status[statusKey].valid) {
+  if (!statusInfo[statusKey].valid) {
     onError?.(statusKey);
     return null;
   }

@@ -1,5 +1,5 @@
 import { zCharMatch, codePoint } from "../z-chars";
-import { Statuscode, status } from "../status";
+import { Statuscode, statusInfo } from "../status";
 
 type _OnError = (error: Statuscode) => void;
 
@@ -23,7 +23,7 @@ const testDecode: TestDecoding = (toDecode) => {
 
 const canDecode: CanDecode = (toDecode) => {
   const statusKey = testDecode(toDecode);
-  return status[statusKey].valid;
+  return statusInfo[statusKey].valid;
 };
 
 const decode: Decode = (toDecode) => {
