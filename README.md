@@ -1,9 +1,8 @@
 <p align="center">
 
-<img width="320px" height="320px" src="https://raw.githubusercontent.com/robstarbuck/z-chars/master/README/header-graphic.svg?token=GHSAT0AAAAAABQVNI52PVVVVVEOE6YGTLH2YRAT2JA" />
+<img width="100%" height="320px" src="https://user-images.githubusercontent.com/5805251/156551854-29ef4800-e455-4e86-bb98-deef7dd0d6b7.svg" />
 
 </p>
-
 
 
 # Set-up
