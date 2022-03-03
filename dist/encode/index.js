@@ -38,9 +38,8 @@ var canEncode = function (subject, toEncode) {
 exports.canEncode = canEncode;
 var encodeLetter = function (letter) {
     var codeRef = letter.codePointAt(0);
-    var zPointers = codeRef === null || codeRef === void 0 ? void 0 : codeRef.toString(z_chars_1.zSet.length).split("");
-    var pointerToZ = function (zIndex) { return z_chars_1.zSet[Number(zIndex)]; };
-    return (zPointers === null || zPointers === void 0 ? void 0 : zPointers.map(pointerToZ).join("")) || "";
+    var zPointers = codeRef === null || codeRef === void 0 ? void 0 : codeRef.toString(z_chars_1.zSet.length).split("").map(Number);
+    return (zPointers === null || zPointers === void 0 ? void 0 : zPointers.map(function (p) { return z_chars_1.zSet[p]; }).join("")) || "";
 };
 exports.encodeLetter = encodeLetter;
 var encodeEach = function (toEncode) {
