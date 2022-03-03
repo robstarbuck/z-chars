@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": ["./dist"],
   "scripts": {
     "start": "jest --watch",
@@ -20,8 +21,5 @@
     "prettier": "^2.0.5",
     "ts-jest": "^25.5.1",
     "typescript": "^3.9.2"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@robstarbuck"
   }
 }
