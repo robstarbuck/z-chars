@@ -2,9 +2,9 @@
   "name": "z-chars",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "files": ["./dist"],
+  "main": "dist/",
+  "types": "dist/index.d.ts",
+  "files": ["dist/"],
   "scripts": {
     "start": "jest --watch",
     "build": "rm -rf dist && tsc -p ."
