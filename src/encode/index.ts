@@ -62,9 +62,8 @@ const canEncode: CanEncode = (subject, toEncode) => {
 
 const encodeLetter: EncodeLetter = (letter) => {
   const codeRef = letter.codePointAt(0);
-  const zPointers = codeRef?.toString(zSet.length).split("");
-  const pointerToZ = (zIndex: string) => zSet[Number(zIndex)];
-  return zPointers?.map(pointerToZ).join("") || "";
+  const zPointers = codeRef?.toString(zSet.length).split("").map(Number);
+  return zPointers?.map((p) => zSet[p]).join("") || "";
 };
 
 const encodeEach: EncodeEach = (toEncode) => {
