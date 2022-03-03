@@ -4,7 +4,7 @@
 
 </p>
 
-A demonstration of Steganography using zero-width bidirectional control characters ordinarily used when embedding Hebrew or Arabic text.
+Steganography using zero-width bidirectional control characters ordinarily used when embedding Hebrew or Arabic text.
 
 # Bookmarks
 
