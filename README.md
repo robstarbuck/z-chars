@@ -1,4 +1,9 @@
-![car-and-logo x320](https://raw.githubusercontent.com/robstarbuck/z-chars/master/README/header-graphic.svg?token=GHSAT0AAAAAABQVNI52PVVVVVEOE6YGTLH2YRAT2JA)
+<p align="center">
+
+<img width="320px" height="320px" src="https://raw.githubusercontent.com/robstarbuck/z-chars/master/README/header-graphic.svg?token=GHSAT0AAAAAABQVNI52PVVVVVEOE6YGTLH2YRAT2JA" />
+
+</p>
+
 
 
 # Set-up
