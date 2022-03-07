@@ -1,5 +1,5 @@
 <p>
-<a align="center" href="https://robstarbuck.github.io/z-chars-demo/">
+<a align="center" href="#">
 <img width="100%" height="320px" src="https://user-images.githubusercontent.com/5805251/156551854-29ef4800-e455-4e86-bb98-deef7dd0d6b7.svg" />
 </a>
 </p>
