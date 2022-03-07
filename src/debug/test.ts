@@ -1,4 +1,4 @@
-import { visualiseEach, visualiseZChars, vSet } from "./index";
+import { visualiseEach, visualiseZChars, visSetDefault as vSet } from "./index";
 import { zCharMatch, zSet } from "../z-chars";
 
 test("basic replacement", () => {
@@ -13,10 +13,3 @@ test("visualise shows character", () => {
   const expected = visualiseZChars(test);
   expect(visible).toEqual(expected);
 });
-
-// test("visualise shows each character", () => {
-//   const test = `a‪‪‪‪⁦b‪‪‪‪⁦c‪‪‪‪⁦d⁩`;
-//   const visible = `A${vSet[0]}B${vSet[1]}C`;
-//   const expected = visualiseZChars(test);
-//   expect(visible).toEqual(expected);
-// });

@@ -1,29 +1,49 @@
-import { zCharMatch, zSet } from "../z-chars";
+import { zCharMatchWithTerminator, zSet } from "../z-chars";
 
-type Visualise = (toDecode: string) => string;
+type Visualise = (toDecode: string, set?: Set) => string;
 
-const visualiseZChars: Visualise = (toDecode) => {
-  const result = toDecode.replaceAll(zCharMatch, visualiseEach);
+type Set = [string, string, string, string];
+
+const visualiseZChars: Visualise = (toDecode, replaceWith = visSet["1to4"]) => {
+  const result = toDecode.replaceAll(zCharMatchWithTerminator, (match) =>
+    visualiseEach(match, replaceWith)
+  );
   return result;
 };
 
-const visualiseZCharsHTML: Visualise = (toDecode) => {
+const visualiseZCharsHTML: Visualise = (
+  toDecode,
+  replaceWith = visSet["1to4"]
+) => {
   const result = toDecode.replaceAll(
-    zCharMatch,
-    (match) => `<code>${visualiseEach(match)}</code>`
+    zCharMatchWithTerminator,
+    (match) => `<code>${visualiseEach(match, replaceWith)}</code>`
   );
   return `<p>${result}</p>`;
 };
 
-const vSet = ["➊", "➋", "➌", "➍"];
+type SetNames = "1to4" | "harvey";
 
-const visualiseEach = (zChars: string) => {
+const visSet: Record<SetNames, Set> = {
+  ["1to4"]: ["0", "1", "2", "3"],
+  ["harvey"]: ["◓", "◑", "◒", "◐"],
+};
+
+const visSetDefault = visSet["1to4"];
+
+const visualiseEach = (zChars: string, replaceWith: Set) => {
   const eachZ = zChars.split("");
   return eachZ
     .map((zChar) => {
-      return vSet[zSet.findIndex((z) => z === zChar)];
+      return replaceWith[zSet.findIndex((z) => z === zChar)];
     })
     .join("");
 };
 
-export { visualiseZChars, visualiseZCharsHTML, visualiseEach, vSet };
+export {
+  visualiseZChars,
+  visualiseZCharsHTML,
+  visualiseEach,
+  visSetDefault,
+  visSet,
+};
