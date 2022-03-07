@@ -1,6 +1,6 @@
 import { codePoint } from "../z-chars";
-import { encodeLetter, encode, mustEncode } from "../encode";
-import { decode, mustDecode } from "../decode";
+import { encodeLetter, mustEncode } from "../encode";
+import { mustDecode } from "../decode";
 
 test("Decode to Codepoint", () => {
   const letter = "A";
