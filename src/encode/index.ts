@@ -60,15 +60,15 @@ const canEncode: CanEncode = (subject, toEncode) => {
   return statusInfo[statusKey].valid;
 };
 
-const encodeLetter: EncodeLetter = (letter) => {
+const encodeChar: EncodeLetter = (letter) => {
   const codeRef = letter.codePointAt(0);
   const zPointers = codeRef?.toString(zSet.length).split("").map(Number);
   return zPointers?.map((p) => zSet[p]).join("") || "";
 };
 
-const encodeEach: EncodeEach = (toEncode) => {
+const encodeEachChar: EncodeEach = (toEncode) => {
   const letters = splitChars(toEncode);
-  return letters ? letters.map(encodeLetter) : [""];
+  return letters ? letters.map(encodeChar) : [""];
 };
 
 const encode: Encode = (subject, toEncode, onError) => {
@@ -77,21 +77,13 @@ const encode: Encode = (subject, toEncode, onError) => {
     onError?.(statusKey);
     return null;
   }
-  const encoded = interpolate(subject, encodeEach(toEncode));
+  const encoded = interpolate(subject, encodeEachChar(toEncode));
   return encoded.concat(terminator);
 };
 
 const mustEncode: MustEncode = (subject, toEncode) => {
-  const encoded = interpolate(subject, encodeEach(toEncode));
+  const encoded = interpolate(subject, encodeEachChar(toEncode));
   return encoded.concat(terminator);
 };
 
-export {
-  interpolate,
-  encodeLetter,
-  encodeEach,
-  testEncode,
-  canEncode,
-  encode,
-  mustEncode,
-};
+export { interpolate, encodeChar, testEncode, canEncode, encode, mustEncode };
