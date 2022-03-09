@@ -9,9 +9,9 @@ type MustDecode = (toDecode: string) => string;
 
 type CanDecode = (toDecode: string) => boolean;
 
-type TestDecoding = (toDecode: string) => Statuscode;
+type TestDecode = (toDecode: string) => Statuscode;
 
-const testDecode: TestDecoding = (toDecode) => {
+const testDecode: TestDecode = (toDecode) => {
   if (toDecode.length === 0) {
     return "EMPTY-DECODE";
   }

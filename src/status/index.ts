@@ -12,7 +12,6 @@ const statusInfo = {
     errorLevel: ErrorStatus.OK,
     errorFrom: undefined,
   },
-
   ["EMPTY-SUBJECT"]: {
     valid: false,
     message: "Text is empty",
@@ -45,7 +44,6 @@ const statusInfo = {
     errorLevel: ErrorStatus.WARN,
     errorFrom: "encode" as const,
   },
-
   ["EMPTY-DECODE"]: {
     valid: false,
     message: "Text is empty",
