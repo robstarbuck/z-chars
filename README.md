@@ -6,6 +6,8 @@
 
 Steganography using zero-width bidirectional control characters ordinarily used when embedding Hebrew or Arabic text.
 
+**Polite notice**: There's enough trash on the web without hidden characters gumming up our messages, please don't use this in the wild.
+
 [Demo](https://robstarbuck.github.io/z-chars-demo/)
 
 # Bookmarks
