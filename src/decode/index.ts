@@ -26,12 +26,14 @@ const canDecode: CanDecode = (toDecode) => {
   return statusInfo[statusKey].valid;
 };
 
-const decode: Decode = (toDecode) => {
-  const zSet = toDecode.match(zCharMatch);
-  if (!zSet) {
+const decode: Decode = (toDecode, onError) => {
+  const statusKey = testDecode(toDecode);
+  if (!statusInfo[statusKey].valid) {
+    onError?.(statusKey);
     return null;
   }
-  const codePoints = zSet?.map((z) => codePoint(z.split("")));
+  const zSet = toDecode.match(zCharMatch)!;
+  const codePoints = zSet.map((z) => codePoint(z.split("")));
   return String.fromCodePoint(...codePoints);
 };
 

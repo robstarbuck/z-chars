@@ -1,10 +1,10 @@
 import { codePoint } from "../z-chars";
-import { encodeChar, mustEncode } from "../encode";
+import { encodeLetter, mustEncode } from "../encode";
 import { mustDecode } from "../decode";
 
 test("Decode to Codepoint", () => {
   const letter = "A";
-  const test = codePoint(encodeChar(letter).split(""));
+  const test = codePoint(encodeLetter(letter).split(""));
   const expected = letter.charCodeAt(0);
   expect(test).toEqual(expected);
 });

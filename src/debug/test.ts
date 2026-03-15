@@ -3,7 +3,7 @@ import { zCharMatch, zSet } from "../z-chars";
 
 test("basic replacement", () => {
   const test = `A${vSet[0]}B`;
-  const expected = `A${zSet[0]}B`.replaceAll(zCharMatch, visualiseEach);
+  const expected = `A${zSet[0]}B`.replaceAll(zCharMatch, (match) => visualiseEach(match, vSet));
   expect(test).toEqual(expected);
 });
 
