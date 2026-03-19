@@ -1,6 +1,6 @@
 {
   "name": "z-chars",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "main": "dist/",
   "types": "dist/index.d.ts",
