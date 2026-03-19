@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ErrorStatus = exports.statusInfo = exports.visualiseZCharsHTML = exports.visualiseZChars = exports.mustDecode = exports.decode = exports.testDecode = exports.canDecode = exports.mustEncode = exports.encode = exports.testEncode = exports.canEncode = void 0;
 var encode_1 = require("./encode");
 Object.defineProperty(exports, "canEncode", { enumerable: true, get: function () { return encode_1.canEncode; } });
 Object.defineProperty(exports, "testEncode", { enumerable: true, get: function () { return encode_1.testEncode; } });

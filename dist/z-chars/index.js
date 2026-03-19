@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.codePoint = exports.zCharMatchWithTerminator = exports.zCharMatch = exports.zSet = exports.terminator = void 0;
-var terminator = "\u2069";
+const terminator = "\u2069";
 exports.terminator = terminator;
-var zSet = ["\u2066", "\u202a", "\u202d"];
+const zSet = ["\u2066", "\u202a", "\u202d"];
 exports.zSet = zSet;
-var zCharMatch = new RegExp("[" + zSet.join("") + "]+", "g");
+const zCharMatch = new RegExp(`[${zSet.join("")}]+`, "g");
 exports.zCharMatch = zCharMatch;
-var zCharMatchWithTerminator = new RegExp("[" + zSet.concat(terminator).join("") + "]+", "g");
+const zCharMatchWithTerminator = new RegExp(`[${zSet.concat(terminator).join("")}]+`, "g");
 exports.zCharMatchWithTerminator = zCharMatchWithTerminator;
-var codePoint = function (zChars) {
-    var indexes = zChars.map(function (l) { return zSet.indexOf(l); });
+const codePoint = (zChars) => {
+    const indexes = zChars.map((l) => zSet.indexOf(l));
     return parseInt(indexes.join(""), zSet.length);
 };
 exports.codePoint = codePoint;

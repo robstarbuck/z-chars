@@ -54,6 +54,6 @@ declare const statusInfo: {
         errorFrom: "decode";
     };
 };
-export declare type Statuscode = keyof typeof statusInfo;
+export type Statuscode = keyof typeof statusInfo;
 export { statusInfo, ErrorStatus };
 //# sourceMappingURL=index.d.ts.map

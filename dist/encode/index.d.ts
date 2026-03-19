@@ -1,12 +1,15 @@
-import { Statuscode } from "../status";
-declare type Interpolate = (subject: string, zChars: string[]) => string;
-declare type _OnError = (error: Statuscode) => void;
-declare type CanEncode = (subject: string, toEncode: string) => boolean;
-declare type TestEncoding = (subject: string, toEncode: string) => Statuscode;
-declare type EncodeLetter = (chars: string) => string;
-declare type EncodeEach = (chars: string) => string[];
-declare type Encode = (subject: string, toEncode: string, onError?: _OnError) => string | null;
-declare type MustEncode = (subject: string, toEncode: string) => string;
+import { Statuscode, statusInfo } from "../status";
+type Interpolate = (subject: string, zChars: string[]) => string;
+export type EncodingStatus = typeof statusInfo[Statuscode] & {
+    code: Statuscode;
+};
+type _OnError = (error: EncodingStatus) => void;
+type CanEncode = (subject: string, toEncode: string) => boolean;
+type TestEncoding = (subject: string, toEncode: string) => EncodingStatus;
+type EncodeLetter = (chars: string) => string;
+type EncodeEach = (chars: string) => string[];
+type Encode = (subject: string, toEncode: string, onError?: _OnError) => string | null;
+type MustEncode = (subject: string, toEncode: string) => string;
 declare const interpolate: Interpolate;
 declare const testEncode: TestEncoding;
 declare const canEncode: CanEncode;
