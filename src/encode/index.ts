@@ -4,11 +4,13 @@ import { Statuscode, statusInfo } from "../status";
 
 type Interpolate = (subject: string, zChars: string[]) => string;
 
-type _OnError = (error: Statuscode) => void;
+export type EncodingStatus = typeof statusInfo[Statuscode] & { code: Statuscode };
+
+type _OnError = (error: EncodingStatus) => void;
 
 type CanEncode = (subject: string, toEncode: string) => boolean;
 
-type TestEncoding = (subject: string, toEncode: string) => Statuscode;
+type TestEncoding = (subject: string, toEncode: string) => EncodingStatus;
 
 type EncodeLetter = (chars: string) => string;
 
@@ -32,32 +34,37 @@ const testEncode: TestEncoding = (subject, toEncode) => {
   const textLen = splitChars(subject).length;
   const encodeLen = splitChars(toEncode).length;
 
+  const getStatus = (code: Statuscode): EncodingStatus => ({
+    code,
+    ...statusInfo[code],
+  });
+
   if (textLen === 0) {
-    return "EMPTY-SUBJECT";
+    return getStatus("EMPTY-SUBJECT");
   }
 
   if (encodeLen === 0) {
-    return "EMPTY-ENCODE";
+    return getStatus("EMPTY-ENCODE");
   }
 
   if (subject.match(zCharMatch)) {
-    return "ZCHR-SUBJECT";
+    return getStatus("ZCHR-SUBJECT");
   }
 
   if (toEncode.match(zCharMatch)) {
-    return "ZCHR-ENCODE";
+    return getStatus("ZCHR-ENCODE");
   }
 
   if (encodeLen >= textLen) {
-    return "LEN-ENCODE";
+    return getStatus("LEN-ENCODE");
   }
 
-  return "OK";
+  return getStatus("OK");
 };
 
 const canEncode: CanEncode = (subject, toEncode) => {
-  const statusKey = testEncode(subject, toEncode);
-  return statusInfo[statusKey].valid;
+  const status = testEncode(subject, toEncode);
+  return status.valid;
 };
 
 const encodeLetter: EncodeLetter = (letter) => {
@@ -72,9 +79,9 @@ const encodeEach: EncodeEach = (toEncode) => {
 };
 
 const encode: Encode = (subject, toEncode, onError) => {
-  const statusKey = testEncode(subject, toEncode);
-  if (!statusInfo[statusKey].valid) {
-    onError?.(statusKey);
+  const status = testEncode(subject, toEncode);
+  if (!status.valid) {
+    onError?.(status);
     return null;
   }
   const encoded = interpolate(subject, encodeEach(toEncode));
